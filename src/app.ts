@@ -1,5 +1,6 @@
 ﻿import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 import rolRoutes from './routes/rol.routes';
 import usuarioRoutes from './routes/usuario.routes';
@@ -15,6 +16,8 @@ import matriculaRoutes from './routes/matricula.routes';
 import detalleMatriculaRoutes from './routes/detalleMatricula.routes';
 
 const app = express();
+
+app.use(cors());
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
