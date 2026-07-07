@@ -1,6 +1,7 @@
 ﻿import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import helmet from 'helmet';
 
 import rolRoutes from './routes/rol.routes';
 import usuarioRoutes from './routes/usuario.routes';
@@ -14,6 +15,8 @@ import horarioRoutes from './routes/horario.routes';
 import periodoAcademicoRoutes from './routes/periodoAcademico.routes';
 import matriculaRoutes from './routes/matricula.routes';
 import detalleMatriculaRoutes from './routes/detalleMatricula.routes';
+import { apiLimiter } from './middlewares/rate-limit';
+import { apiKeyAuth } from './middlewares/api-key';
 
 const app = express();
 
@@ -32,20 +35,25 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ limit: '10kb'}));
+app.use(apiLimiter);
+
 app.use(express.json());
 
-app.use('/roles', rolRoutes);
-app.use('/usuarios', usuarioRoutes);
-app.use('/facultades', facultadRoutes);
-app.use('/carreras', carreraRoutes);
-app.use('/docentes', docenteRoutes);
-app.use('/estudiantes', estudianteRoutes);
-app.use('/cursos', cursoRoutes);
-app.use('/aulas', aulaRoutes);
-app.use('/horarios', horarioRoutes);
-app.use('/periodos', periodoAcademicoRoutes);
-app.use('/matriculas', matriculaRoutes);
-app.use('/detalles-matricula', detalleMatriculaRoutes);
+app.use('/roles', apiKeyAuth, rolRoutes);
+app.use('/usuarios', apiKeyAuth, usuarioRoutes);
+app.use('/facultades', apiKeyAuth, facultadRoutes);
+app.use('/carreras', apiKeyAuth, carreraRoutes);
+app.use('/docentes', apiKeyAuth, docenteRoutes);
+app.use('/estudiantes', apiKeyAuth, estudianteRoutes);
+app.use('/cursos', apiKeyAuth, cursoRoutes);
+app.use('/aulas', apiKeyAuth, aulaRoutes);
+app.use('/horarios', apiKeyAuth, horarioRoutes);
+app.use('/periodos', apiKeyAuth, periodoAcademicoRoutes);
+app.use('/matriculas', apiKeyAuth, matriculaRoutes);
+app.use('/detalles-matricula', apiKeyAuth, detalleMatriculaRoutes);
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
