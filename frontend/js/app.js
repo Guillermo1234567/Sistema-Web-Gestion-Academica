@@ -21,7 +21,7 @@ const relation = (name, label, source, display, required = true, extra = {}) => 
   name, label, type: "relation", source, display, required, ...extra
 });
 
-// ConfiguraciÃ³n central: rutas y campos coinciden con el contrato del backend.
+// Configuración central: rutas y campos coinciden con el contrato del backend.
 const modules = {
   roles: {
     label: "Roles", singular: "rol", short: "RO", group: "Seguridad", endpoint: "/roles", id: "id_rol",
@@ -36,21 +36,21 @@ const modules = {
     columns: ["id_usuario", "username", "correo", "id_rol", "estado"],
     fields: [
       text("username", "Nombre de usuario"),
-      { name: "correo", label: "Correo electrÃ³nico", type: "email", required: true },
-      { name: "password_hash", label: "ContraseÃ±a / hash", type: "password", required: true, hint: "El backend recibe este valor como password_hash." },
+      { name: "correo", label: "Correo electrónico", type: "email", required: true },
+      { name: "password_hash", label: "Contraseña / hash", type: "password", required: true, hint: "El backend recibe este valor como password_hash." },
       relation("id_rol", "Rol", "roles", "nombre_rol")
     ],
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   facultades: {
-    label: "Facultades", singular: "facultad", short: "FA", group: "AcadÃ©mico", endpoint: "/facultades", id: "id_facultad",
-    description: "Organiza las facultades de la instituciÃ³n.",
+    label: "Facultades", singular: "facultad", short: "FA", group: "Académico", endpoint: "/facultades", id: "id_facultad",
+    description: "Organiza las facultades de la institución.",
     columns: ["id_facultad", "nombre_facultad", "estado"],
     fields: [text("nombre_facultad", "Nombre de la facultad")],
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   carreras: {
-    label: "Carreras", singular: "carrera", short: "CA", group: "AcadÃ©mico", endpoint: "/carreras", id: "id_carrera",
+    label: "Carreras", singular: "carrera", short: "CA", group: "Académico", endpoint: "/carreras", id: "id_carrera",
     description: "Gestiona la oferta de carreras por facultad.",
     columns: ["id_carrera", "id_facultad", "nombre_carrera", "estado"],
     fields: [
@@ -61,17 +61,17 @@ const modules = {
   },
   docentes: {
     label: "Docentes", singular: "docente", short: "DO", group: "Personas", endpoint: "/docentes", id: "id_docente",
-    description: "MantÃ©n actualizada la informaciÃ³n del personal docente.",
+    description: "Mantén actualizada la información del personal docente.",
     columns: ["id_docente", "numero_documento", "nombres", "apellidos", "especialidad", "costo_hora", "estado"],
     fields: [
       relation("id_usuario", "Usuario vinculado", "usuarios", "username", false, { nullable: true }),
-      text("numero_documento", "NÃºmero de documento"),
+      text("numero_documento", "Número de documento"),
       text("nombres", "Nombres"),
       text("apellidos", "Apellidos"),
-      text("telefono", "TelÃ©fono", false),
-      text("direccion", "DirecciÃ³n", false, { full: true }),
+      text("telefono", "Teléfono", false),
+      text("direccion", "Dirección", false, { full: true }),
       text("especialidad", "Especialidad", false),
-      text("grado_academico", "Grado acadÃ©mico", false),
+      text("grado_academico", "Grado académico", false),
       number("costo_hora", "Costo por hora", true, { min: 0, step: "0.01" })
     ],
     updateFields: ["telefono", "direccion", "especialidad", "grado_academico", "costo_hora"],
@@ -84,31 +84,31 @@ const modules = {
     fields: [
       relation("id_usuario", "Usuario vinculado", "usuarios", "username", false, { nullable: true }),
       relation("id_carrera", "Carrera", "carreras", "nombre_carrera"),
-      text("codigo_estudiante", "CÃ³digo de estudiante"),
-      text("numero_documento", "NÃºmero de documento"),
+      text("codigo_estudiante", "Código de estudiante"),
+      text("numero_documento", "Número de documento"),
       text("nombres", "Nombres"),
       text("apellidos", "Apellidos"),
-      text("telefono", "TelÃ©fono", false),
-      text("direccion", "DirecciÃ³n", false, { full: true })
+      text("telefono", "Teléfono", false),
+      text("direccion", "Dirección", false, { full: true })
     ],
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   cursos: {
-    label: "Cursos", singular: "curso", short: "CU", group: "AcadÃ©mico", endpoint: "/cursos", id: "id_curso",
-    description: "Configura cursos, crÃ©ditos y docentes responsables.",
+    label: "Cursos", singular: "curso", short: "CU", group: "Académico", endpoint: "/cursos", id: "id_curso",
+    description: "Configura cursos, créditos y docentes responsables.",
     columns: ["id_curso", "codigo_curso", "nombre_curso", "id_docente", "id_carrera", "creditos", "horas_semanales", "estado"],
     fields: [
       relation("id_docente", "Docente", "docentes", ["nombres", "apellidos"]),
       relation("id_carrera", "Carrera", "carreras", "nombre_carrera"),
-      text("codigo_curso", "CÃ³digo del curso"),
+      text("codigo_curso", "Código del curso"),
       text("nombre_curso", "Nombre del curso"),
-      number("creditos", "CrÃ©ditos", true, { min: 0, step: "1" }),
+      number("creditos", "Créditos", true, { min: 0, step: "1" }),
       number("horas_semanales", "Horas semanales", true, { min: 0, step: "1" })
     ],
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   aulas: {
-    label: "Aulas", singular: "aula", short: "AU", group: "AcadÃ©mico", endpoint: "/aulas", id: "id_aula",
+    label: "Aulas", singular: "aula", short: "AU", group: "Académico", endpoint: "/aulas", id: "id_aula",
     description: "Controla los espacios y su capacidad disponible.",
     columns: ["id_aula", "nombre_aula", "capacidad", "estado"],
     fields: [
@@ -118,21 +118,21 @@ const modules = {
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   horarios: {
-    label: "Horarios", singular: "horario", short: "HO", group: "PlanificaciÃ³n", endpoint: "/horarios", id: "id_horario",
+    label: "Horarios", singular: "horario", short: "HO", group: "Planificación", endpoint: "/horarios", id: "id_horario",
     description: "Programa cursos, aulas y bloques horarios.",
     columns: ["id_horario", "id_curso", "id_aula", "dia_semana", "hora_inicio", "hora_fin", "estado"],
     fields: [
       relation("id_curso", "Curso", "cursos", "nombre_curso"),
       relation("id_aula", "Aula", "aulas", "nombre_aula"),
-      { name: "dia_semana", label: "DÃ­a de la semana", type: "select", required: true, options: ["Lunes", "Martes", "MiÃ©rcoles", "Jueves", "Viernes", "SÃ¡bado", "Domingo"].map(value => ({ value, label: value })) },
+      { name: "dia_semana", label: "Día de la semana", type: "select", required: true, options: ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"].map(value => ({ value, label: value })) },
       { name: "hora_inicio", label: "Hora de inicio", type: "time", required: true },
       { name: "hora_fin", label: "Hora de fin", type: "time", required: true }
     ],
     updateExtra: [{ name: "estado", label: "Estado", type: "select", options: booleanOptions }]
   },
   periodos: {
-    label: "Periodos", singular: "periodo", short: "PE", group: "PlanificaciÃ³n", endpoint: "/periodos", id: "id_periodo",
-    description: "Define las fechas y el estado de cada periodo acadÃ©mico.",
+    label: "Periodos", singular: "periodo", short: "PE", group: "Planificación", endpoint: "/periodos", id: "id_periodo",
+    description: "Define las fechas y el estado de cada periodo académico.",
     columns: ["id_periodo", "nombre_periodo", "fecha_inicio", "fecha_fin", "estado"],
     fields: [
       text("nombre_periodo", "Nombre del periodo"),
@@ -142,21 +142,21 @@ const modules = {
     ]
   },
   matriculas: {
-    label: "MatrÃ­culas", singular: "matrÃ­cula", short: "MA", group: "MatrÃ­culas", endpoint: "/matriculas", id: "id_matricula",
-    description: "Gestiona la inscripciÃ³n de estudiantes por periodo.",
+    label: "Matrículas", singular: "matrícula", short: "MA", group: "Matrículas", endpoint: "/matriculas", id: "id_matricula",
+    description: "Gestiona la inscripción de estudiantes por periodo.",
     columns: ["id_matricula", "id_estudiante", "id_periodo", "fecha_matricula", "estado"],
     fields: [
       relation("id_estudiante", "Estudiante", "estudiantes", ["codigo_estudiante", "nombres", "apellidos"]),
-      relation("id_periodo", "Periodo acadÃ©mico", "periodos", "nombre_periodo"),
-      { name: "estado", label: "Estado", type: "select", required: true, options: ["PENDIENTE", "ACTIVA", "ANULADA"].map(value => ({ value, label: value })) }
+      relation("id_periodo", "Periodo académico", "periodos", "nombre_periodo"),
+      { name: "estado", label: "Estado", type: "select", required: true, options: ["PENDIENTE", "CONFIRMADA", "ANULADA"].map(value => ({ value, label: value })) }
     ]
   },
   detallesMatricula: {
-    label: "Detalles de matrÃ­cula", singular: "detalle de matrÃ­cula", short: "DM", group: "MatrÃ­culas", endpoint: "/detalles-matricula", id: "id_detalle_matricula",
-    description: "Asigna cursos a las matrÃ­culas registradas.",
+    label: "Detalles de matrícula", singular: "detalle de matrícula", short: "DM", group: "Matrículas", endpoint: "/detalles-matricula", id: "id_detalle_matricula",
+    description: "Asigna cursos a las matrículas registradas.",
     columns: ["id_detalle_matricula", "id_matricula", "id_curso", "fecha_creacion"],
     fields: [
-      relation("id_matricula", "MatrÃ­cula", "matriculas", "id_matricula"),
+      relation("id_matricula", "Matrícula", "matriculas", "id_matricula"),
       relation("id_curso", "Curso", "cursos", ["codigo_curso", "nombre_curso"])
     ],
     replaceOnEdit: true
@@ -167,14 +167,14 @@ const labels = {
   id_rol: "ID", nombre_rol: "Rol", estado: "Estado", id_usuario: "Usuario", username: "Usuario",
   correo: "Correo", id_facultad: "Facultad", nombre_facultad: "Facultad", id_carrera: "Carrera",
   nombre_carrera: "Carrera", id_docente: "Docente", numero_documento: "Documento", nombres: "Nombres",
-  apellidos: "Apellidos", telefono: "TelÃ©fono", direccion: "DirecciÃ³n", especialidad: "Especialidad",
-  grado_academico: "Grado acadÃ©mico", costo_hora: "Costo/hora", id_estudiante: "Estudiante",
-  codigo_estudiante: "CÃ³digo", id_curso: "Curso", codigo_curso: "CÃ³digo", nombre_curso: "Curso",
-  creditos: "CrÃ©ditos", horas_semanales: "Horas/sem.", id_aula: "Aula", nombre_aula: "Aula",
-  capacidad: "Capacidad", id_horario: "ID", dia_semana: "DÃ­a", hora_inicio: "Inicio", hora_fin: "Fin",
+  apellidos: "Apellidos", telefono: "Teléfono", direccion: "Dirección", especialidad: "Especialidad",
+  grado_academico: "Grado académico", costo_hora: "Costo/hora", id_estudiante: "Estudiante",
+  codigo_estudiante: "Código", id_curso: "Curso", codigo_curso: "Código", nombre_curso: "Curso",
+  creditos: "Créditos", horas_semanales: "Horas/sem.", id_aula: "Aula", nombre_aula: "Aula",
+  capacidad: "Capacidad", id_horario: "ID", dia_semana: "Día", hora_inicio: "Inicio", hora_fin: "Fin",
   id_periodo: "Periodo", nombre_periodo: "Periodo", fecha_inicio: "Inicio", fecha_fin: "Fin",
-  id_matricula: "MatrÃ­cula", fecha_matricula: "Fecha", id_detalle_matricula: "ID",
-  fecha_creacion: "Fecha de creaciÃ³n"
+  id_matricula: "Matrícula", fecha_matricula: "Fecha", id_detalle_matricula: "ID",
+  fecha_creacion: "Fecha de creación"
 };
 
 const state = {
@@ -308,7 +308,7 @@ function renderError(module, error) {
       <div class="empty-content">
         <div class="empty-icon">${icons.alert}</div>
         <strong>No pudimos conectar con la API</strong>
-        <span>${escapeHtml(friendlyError(error))} Verifica que el backend estÃ© activo y permita solicitudes CORS desde Live Server.</span>
+        <span>${escapeHtml(friendlyError(error))} Verifica que el backend esté activo y permita solicitudes CORS desde Live Server.</span>
       </div>
     </td></tr>`;
   dom.resultText.textContent = "No se pudieron cargar los datos";
@@ -317,9 +317,9 @@ function renderError(module, error) {
 
 function friendlyError(error) {
   if (error instanceof TypeError && /fetch/i.test(error.message)) {
-    return "La conexiÃ³n fue rechazada o bloqueada por el navegador.";
+    return "La conexión fue rechazada o bloqueada por el navegador.";
   }
-  return error?.message || "OcurriÃ³ un error inesperado.";
+  return error?.message || "Ocurrió un error inesperado.";
 }
 
 function applySearch() {
@@ -341,7 +341,7 @@ function renderTable() {
         <div class="empty-content">
           <div class="empty-icon">${icons.empty}</div>
           <strong>${hasSearch ? "No hay coincidencias" : "No hay registros"}</strong>
-          <span>${hasSearch ? "Prueba con otro tÃ©rmino de bÃºsqueda." : `TodavÃ­a no existen registros en ${module.label.toLocaleLowerCase("es")}. Usa â€œNuevo registroâ€ para agregar el primero.`}</span>
+          <span>${hasSearch ? "Prueba con otro término de búsqueda." : `Todavía no existen registros en ${module.label.toLocaleLowerCase("es")}. Usa 'Nuevo registro' para agregar el primero.`}</span>
         </div>
       </td></tr>`;
   } else {
@@ -425,10 +425,10 @@ async function openForm(record = null) {
 
   if (isEdit && module.replaceOnEdit) {
     dom.formNote.hidden = false;
-    dom.formNote.textContent = "La API no incluye una ruta PUT para este recurso. Al guardar, se eliminarÃ¡ el detalle actual y se registrarÃ¡ uno nuevo con los datos indicados.";
+    dom.formNote.textContent = "La API no incluye una ruta PUT para este recurso. Al guardar, se eliminará el detalle actual y se registrará uno nuevo con los datos indicados.";
   } else if (isEdit && module.updateFields) {
     dom.formNote.hidden = false;
-    dom.formNote.textContent = "El endpoint de actualizaciÃ³n de docentes solo admite datos profesionales, de contacto, costo por hora y estado.";
+    dom.formNote.textContent = "El endpoint de actualización de docentes solo admite datos profesionales, de contacto, costo por hora y estado.";
   }
 
   const fields = fieldsForMode(module, isEdit);
@@ -455,7 +455,7 @@ function renderField(field, record) {
   let control;
   if (field.type === "select") {
     control = `<select ${attributes}>
-      <option value="" disabled${value === "" ? " selected" : ""}>Selecciona una opciÃ³n</option>
+      <option value="" disabled${value === "" ? " selected" : ""}>Selecciona una opción</option>
       ${field.options.map(option => `<option value="${escapeHtml(option.value)}"${String(option.value) === String(value) ? " selected" : ""}>${escapeHtml(option.label)}</option>`).join("")}
     </select>`;
   } else if (field.type === "relation") {
@@ -489,7 +489,7 @@ async function populateRelationFields(fields, record) {
       const records = await getRelationRecords(field.source);
       if (!document.body.contains(select)) return;
       const current = normalizeInputValue(field, record?.[field.name]);
-      const placeholder = field.nullable || !field.required ? "Sin vincular" : "Selecciona una opciÃ³n";
+      const placeholder = field.nullable || !field.required ? "Sin vincular" : "Selecciona una opción";
       select.innerHTML = `<option value="">${placeholder}</option>${records.map(item => {
         const sourceModule = modules[field.source];
         const value = item[sourceModule.id];
@@ -555,7 +555,7 @@ async function saveRecord(event) {
     showToast("Revisa las fechas", "La fecha de fin debe ser igual o posterior a la fecha de inicio.", "error");
     return;
   }
-  if (isEdit && module.replaceOnEdit && !window.confirm("Este cambio eliminarÃ¡ el detalle actual y crearÃ¡ uno nuevo. Â¿Deseas continuar?")) return;
+  if (isEdit && module.replaceOnEdit && !window.confirm("Este cambio eliminará el detalle actual y creará uno nuevo. Â¿Deseas continuar?")) return;
 
   setSaving(true);
   try {
@@ -568,7 +568,7 @@ async function saveRecord(event) {
     }
     state.relationCache.clear();
     closeFormAfterSave();
-    showToast(isEdit ? "Registro actualizado" : "Registro creado", `El ${module.singular} se guardÃ³ correctamente.`);
+    showToast(isEdit ? "Registro actualizado" : "Registro creado", `El ${module.singular} se guardó correctamente.`);
     await loadRecords({ silent: true });
   } catch (error) {
     showToast("No se pudo guardar", friendlyError(error), "error");
@@ -597,10 +597,10 @@ async function editRecord(id) {
     const fresh = await apiRequest(`${module.endpoint}/${id}`);
     if (fresh && !Array.isArray(fresh)) record = fresh.data && !Array.isArray(fresh.data) ? fresh.data : fresh;
   } catch {
-    // Si GET por ID falla, el registro ya listado permite continuar con la ediciÃ³n.
+    // Si GET por ID falla, el registro ya listado permite continuar con la edición.
   }
   if (!record) {
-    showToast("Registro no encontrado", "Actualiza la tabla e intÃ©ntalo nuevamente.", "error");
+    showToast("Registro no encontrado", "Actualiza la tabla e inténtalo nuevamente.", "error");
     return;
   }
   openForm(record);
@@ -608,12 +608,12 @@ async function editRecord(id) {
 
 async function deleteRecord(id) {
   const module = modules[state.currentKey];
-  if (!window.confirm(`Â¿Deseas eliminar este ${module.singular}? Esta acciÃ³n puede cambiar su estado o retirarlo definitivamente.`)) return;
+  if (!window.confirm(`Â¿Deseas eliminar este ${module.singular}? Esta acción puede cambiar su estado o retirarlo definitivamente.`)) return;
 
   try {
     await apiRequest(`${module.endpoint}/${id}`, { method: "DELETE" });
     state.relationCache.clear();
-    showToast("Registro eliminado", `El ${module.singular} se eliminÃ³ correctamente.`);
+    showToast("Registro eliminado", `El ${module.singular} se eliminó correctamente.`);
     await loadRecords({ silent: true });
   } catch (error) {
     showToast("No se pudo eliminar", friendlyError(error), "error");
@@ -665,4 +665,3 @@ function initialize() {
 }
 
 initialize();
-
