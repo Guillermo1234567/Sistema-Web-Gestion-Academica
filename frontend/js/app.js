@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-const API_URL = "https://sistema-web-gestion-academica.onrender.com";
+const API_BASE_URL = "https://sistema-web-gestion-academica.onrender.com";
 
 const icons = {
   edit: '<svg viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20ZM14 7l3 3"/></svg>',
